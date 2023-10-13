@@ -24,7 +24,10 @@
                 <a class="nav-link" href="/posts">posts</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="/iti/students">Students</a>
+                <a class="nav-link" href="{{route('iti.students')}}">Students</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('students.list')}}">ITI Students</a>
               </li>
              
           </div>

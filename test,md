@@ -1,0 +1,40 @@
+Database --> connection 
+
+ORM --> object relationa mapper 
+
+
+table ---> class 
+record --> object  
+
+
+
+migration files --> build database --> tables, columnes datatypes 
+
+
+1- create migration file  --> done 
+
+2- run migration files --> database 
+------------------------------------------------
+
+1- .env --> create your database  
+
+2- build database --> tables, columns, ....
+
+    migrations files --> php artisan make:migration create_table_NAME
+
+    run migration files -->php artisan migrate 
+
+    run migration files -->php artisan migrate:status 
+    run migration files -->php artisan migrate:fresh
+    run migration files -->php artisan migrate:refresh 
+    run migration files -->php artisan migrate:reset   
+
+
+
+3- MODEL --> 
+    php artisan make:model Student (single)  --> table students 
+    model post --> posts 
+     
+
+
+

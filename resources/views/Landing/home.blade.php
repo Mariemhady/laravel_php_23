@@ -1,4 +1,4 @@
-@extends('nav')
+@extends('Landing.nav')
 
 @section("title")
     Home Page
