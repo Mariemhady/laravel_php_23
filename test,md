@@ -34,7 +34,29 @@ migration files --> build database --> tables, columnes datatypes
 3- MODEL --> 
     php artisan make:model Student (single)  --> table students 
     model post --> posts 
-     
+     _______________________________________________
+     ---> 1- create laravel project
+     --> 2- create your database 
+     3- config your .env file using database info 
+     4- create your tables using migratins files:
+            php artisan make:migration create_NAMES_table
+    5- create your model 
+            php artisan make:model Name 
+
+    6- create your contrlloer 
+        php artisan make:controller NameController -m NAMEMODEL  -->generate resource contrlloer --> crud operations --> 
+            index create store edit update show destory 
+
+    7- create your routes: (web.php)     
 
 
+8- php artisan make:request StoreTrackController --> to add the validation
+________________________________________________________
 
+9- Relation --> Students -> track 
+
+
+    student --> belongs to --> track 
+    track --> has many --> students 
+
+    table --> students --> fk --> track 

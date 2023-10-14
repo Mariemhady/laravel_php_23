@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use App\Models\Track;
+
 
 class ItistudentController extends Controller
 {
@@ -14,9 +16,7 @@ class ItistudentController extends Controller
     }
 
     function show($id){
-        // dd($id);
         $student = Student::findorfail($id);
-        // dd($student);
         return view("ITI.Students.show", ["data" => $student]);
     }
 
@@ -29,7 +29,8 @@ class ItistudentController extends Controller
 
 
     function create(){
-        return view("ITI.Students.create");
+        $tracks = Track::all();
+        return view("ITI.Students.create", ["data" => $tracks]);
     }
 
     function store(){
@@ -38,11 +39,26 @@ class ItistudentController extends Controller
         $email = request()->get('email');
         $image = request()->get('image');
         $grade = request()->get('grade');
+        $track = request()->get('track_id');
+
+
+        request()->validate([
+            "name" => "required|min:3",
+            "email" => "required"
+        ],[
+            "name.required"=> "Student Name is Required",
+            "email.required"=> "Student Email is Required",
+            "name.min" => "Student Name must be more than 2 chars"
+        ]
+    );
+
         $student = new Student();
         $student->name = $name;
         $student->email = $email;
         $student->image = $image;
         $student->grade = $grade;
+        $student->track_id = $track;
+
         $student->save(); 
         return to_route('students.list');
     }
@@ -59,6 +75,17 @@ class ItistudentController extends Controller
         $student->email = request("email");
         $student->grade = request("grade");
         $student->image = request("image");
+
+        request()->validate([
+            "name" => "required|min:3",
+            "email" => "required"
+        ],[
+            "name.required"=> "Student Name is Required",
+            "email.required"=> "Student Email is Required",
+            "name.min" => "Student Name must be more than 2 chars"
+        ]
+    );
+
         $student->update();
         return to_route('students.list');
     }

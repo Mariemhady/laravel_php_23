@@ -50,6 +50,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ItistudentController;
+use App\Http\Controllers\TrackController;
+
 
 
 Route::get("/iti/students/{id}", [StudentController::class, 'studentShow'])->name("student.show");
@@ -78,3 +80,7 @@ Route::get("/studentsedit/{id}", [ItistudentController::class, "edit"])->name("s
 
 
 Route::put("/studentsupdate/{id}", [ItistudentController::class, "update"])->name("students.update");
+// _______________________ Tracks Routes _______________________
+
+// resourse controller 
+    Route::resource("tracks", TrackController::class);

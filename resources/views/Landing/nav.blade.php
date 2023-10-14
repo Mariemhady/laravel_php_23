@@ -30,6 +30,9 @@
                 <a class="nav-link" href="{{route('students.list')}}">ITI Students</a>
               </li>
              
+              <li class="nav-item">
+                <a class="nav-link" href="{{route('tracks.index')}}">ITI Tracks</a>
+              </li>
           </div>
         </div>
       </nav>
