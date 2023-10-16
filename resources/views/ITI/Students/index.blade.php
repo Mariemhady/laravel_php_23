@@ -34,20 +34,27 @@
                 <img src="{{asset('Images/'.$std['image'])}}" width="50" height="50"/>
             </td>
 
+            
+            @can("is-admin")
             <td>
                
-               <a class="btn btn-warning" 
-    href="{{route('students.show',$std['id'] )}}"> Show </a>
-            </td>
-            <td>
-                <a class="btn btn-danger" 
-    href="{{route('students.delete',$std['id'] )}}"> Delete </a>
-            </td>
+                <a class="btn btn-warning" 
+     href="{{route('students.show',$std['id'] )}}"> Show </a>
+             </td>
+                    <td>
+                        <a class="btn btn-danger" 
+            href="{{route('students.delete',$std['id'] )}}"> Delete </a>
+                    </td>
+            @endcan
 
-            <td>
-                <a class="btn btn-info" 
-    href="{{route('students.edit',$std['id'] )}}"> Edit </a>
-            </td>
+            @if(auth()->user()->id == $std->user_id)
+                <td>
+                    <a class="btn btn-info" 
+                 href="{{route('students.edit',$std['id'] )}}"> Edit </a>
+                </td>
+            
+            @endif
+           
         </tr>
     @endforeach
 

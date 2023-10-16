@@ -6,6 +6,7 @@ use App\Models\Track;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreTrackController;
 use App\Http\Requests\UpdateTrackRequest;
+use Illuminate\Support\Facades\Gate;
 
 
 class TrackController extends Controller
@@ -33,8 +34,15 @@ class TrackController extends Controller
      */
     public function store(StoreTrackController $request)
     {
-        
-        Track::create($request->all());
+        // dd($request->all());
+        $data = $request->all();
+        if($request->hasFile("image")){
+            $trackImage = $data["image"];
+            $path = $trackImage->store("uploadedImage", 'track_images');
+            // dd($path);
+            $data["image"]= $path;
+        }
+        Track::create($data);
         return to_route("tracks.index");
     }
 
@@ -65,9 +73,13 @@ class TrackController extends Controller
      */
     public function update(UpdateTrackRequest $request, Track $track)
     {
-        //
-        $track->update($request->all());
-        return to_route("tracks.index");
+        $allowUser = Gate::inspect("update", $track);
+        if($allowUser->allowed()){
+            $track->update($request->all());
+            return to_route("tracks.index");
+        };
+
+        return abort(403);
         
     }
 
@@ -76,6 +88,16 @@ class TrackController extends Controller
      */
     public function destroy(Track $track)
     {
+        // dd($track->image);
+        if($track->image){
+            try{
+                unlink("Images/track_images/{$track->image}");
+            }catch(Execption $err){
+                dd($err);
+            }
+        }
+
+
         $track->delete();
         return to_route("tracks.index");
         

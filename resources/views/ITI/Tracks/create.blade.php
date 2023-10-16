@@ -13,7 +13,7 @@
 
 
 
-<form action="{{route('tracks.store')}}" method="post">
+<form action="{{route('tracks.store')}}" method="post" enctype="multipart/form-data">
   @csrf
 
   <div class="mb-3">
@@ -30,6 +30,11 @@
   @error("description")
       <div class="text-danger"> {{$message}} </div>
     @enderror
+
+    <div class="mb-3">
+      <label for="exampleInputPassword1" class="form-label">Image</label>
+      <input type="file" class="form-control" id="exampleInputPassword1" name="image">
+    </div>
   
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

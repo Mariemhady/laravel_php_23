@@ -60,3 +60,59 @@ ________________________________________________________
     track --> has many --> students 
 
     table --> students --> fk --> track 
+    -----------------------------------
+    Day 4: 
+
+    1- upload image: 
+        
+
+
+
+    2-  
+    Authintcation --> Valid --> trusted --> email + pass 
+
+    Authorization --> Permission --> What user Can do ?
+
+
+    Middleware --> 
+            3 parts:    
+                    global 
+                    routes
+                    application 
+
+                    ---------------
+                    authorization: 
+
+            1- GATES --> 
+
+            2- POLICES --> 
+
+            3- MIDDLEWARE
+
+        --------------------------------------------
+
+        Gate: 
+
+                providres/AuthServiceProvidre 
+                        define all your gates  
+
+                controller-->if(Gate::allows("is-admin")){
+
+                view --> @can("GATENAME")
+
+        Polices: 
+
+                php artisan make:policy StudentPolicy 
+
+                Plicies/StudentPolicy
+
+                in StudentPolicy --> 
+                        function destroy(){
+                            can("is-manager)
+                        }
+
+                add the new policy --> authserviceprovider
+
+
+            Middleware: 
+                

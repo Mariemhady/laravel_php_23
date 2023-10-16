@@ -13,6 +13,8 @@
 
 @section("content")
 <div class="card" style="width: 18rem;">
+  {{-- @dump($data["image"]) --}}
+<img src="{{asset('Images/track_images/'.$data["image"])}}" />
     <div class="card-body">
       <h5 class="card-title">{{$data["name"]}}</h5>
       <p class="card-text">{{$data["description"]}}</p>

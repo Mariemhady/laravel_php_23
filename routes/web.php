@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 
 // Route::get("/iti", function(){
@@ -68,19 +68,27 @@ Route::get("/students/create", [ItistudentController::class, "create"])->name("s
 
 Route::get("/students", [ItistudentController::class, "index"])->name("students.list");
 
-Route::get("/students/{id}", [ItistudentController::class, "show"])->name("students.show");
+Route::get("/students/{id}", [ItistudentController::class, "show"])->name("students.show")->middleware("auth");
 
 Route::get("/students/delete/{id}", [ItistudentController::class, "destroy"])->name("students.delete");
 
 
-Route::post("/studentsstore", [ItistudentController::class, "store"])->name("students.store");
+Route::post("/studentsstore", [ItistudentController::class, "store"])->name("students.store")->middleware("auth");
 
 
-Route::get("/studentsedit/{id}", [ItistudentController::class, "edit"])->name("students.edit");
+Route::get("/studentsedit/{id}", [ItistudentController::class, "edit"])->name("students.edit")->middleware("auth");
 
 
-Route::put("/studentsupdate/{id}", [ItistudentController::class, "update"])->name("students.update");
+Route::put("/studentsupdate/{id}", [ItistudentController::class, "update"])->name("students.update")->middleware("auth");
 // _______________________ Tracks Routes _______________________
 
 // resourse controller 
-    Route::resource("tracks", TrackController::class);
+    Route::resource("tracks", TrackController::class)->middleware('admin');
+    // ->middleware("auth");
+    // ->except(["index"]);
+    // ->middleware("auth");
+    // ->only(["show"]);
+    // middleware("auth")->except(["index"]);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

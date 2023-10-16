@@ -5,43 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Track;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ItistudentController extends Controller
 {
+
+    // function __construct(){
+    //     // $this->middleware('auth')->only(["store", "destroy", "edit", "show","create"]);
+    //     $this->middleware("auth")->except(["index", "show"]);
+    // }
+
+
     function index(){
-        $students = Student::all(); // select * from students 
-        // dd($students); // dump and die 
+        $students = Student::all(); 
         return view("ITI.Students.index", ['data' => $students]);
     }
 
     function show($id){
-        $student = Student::findorfail($id);
-        return view("ITI.Students.show", ["data" => $student]);
+        if(Gate::allows("is-admin")){
+            $student = Student::findorfail($id);
+            return view("ITI.Students.show", ["data" => $student]);
+        }
+        return abort(403);
     }
 
     function destroy($id){
-        // dd($id);
-        $student = Student::findorfail($id);
-        $student->delete();
-        return to_route('students.list');
+        if(Gate::allows("is-admin")){
+            $student = Student::findorfail($id);
+            $student->delete();
+            return to_route('students.list');
+        }
+        return abort(403);
     }
 
 
     function create(){
+        dump(Auth::id());
         $tracks = Track::all();
         return view("ITI.Students.create", ["data" => $tracks]);
     }
 
     function store(){
-        $data = request();
-        $name = request()->get('name'); // get the value from the input called name 
-        $email = request()->get('email');
-        $image = request()->get('image');
-        $grade = request()->get('grade');
-        $track = request()->get('track_id');
-
-
         request()->validate([
             "name" => "required|min:3",
             "email" => "required"
@@ -51,15 +56,9 @@ class ItistudentController extends Controller
             "name.min" => "Student Name must be more than 2 chars"
         ]
     );
-
-        $student = new Student();
-        $student->name = $name;
-        $student->email = $email;
-        $student->image = $image;
-        $student->grade = $grade;
-        $student->track_id = $track;
-
-        $student->save(); 
+        $request_data = request()->all();
+        $request_data['user_id'] = Auth::id();
+        $student = Student::create($request_data);
         return to_route('students.list');
     }
 
@@ -69,8 +68,14 @@ class ItistudentController extends Controller
         return view("ITI.Students.edit", ["data" => $student ]);
     }
 
-    function update($id){
-        $student= Student::findorfail($id);
+    function update($id, Student $student){
+        $student = Student::findorfail($id);
+        // dd($student->user_id);//3
+        // dd(auth()->user()->id); // 3
+
+
+        if(auth()->user()->id == $student->user_id){
+            $student= Student::findorfail($id);
         $student->name = request("name");
         $student->email = request("email");
         $student->grade = request("grade");
@@ -85,8 +90,14 @@ class ItistudentController extends Controller
             "name.min" => "Student Name must be more than 2 chars"
         ]
     );
-
         $student->update();
         return to_route('students.list');
+        };
+
+        abort(403);
+
+        
+
+        
     }
 }
